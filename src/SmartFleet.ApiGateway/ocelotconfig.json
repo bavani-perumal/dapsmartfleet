@@ -1,0 +1,244 @@
+{
+  "Routes": [
+    {
+      "DownstreamPathTemplate": "/token",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "smartfleet.auth",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/auth/token",
+      "UpstreamHttpMethod": [ "Post" ]
+    },
+    {
+      "DownstreamPathTemplate": "/register",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "smartfleet.auth",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/auth/register",
+      "UpstreamHttpMethod": [ "Post" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/users",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "smartfleet.auth",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/auth/users",
+      "UpstreamHttpMethod": [ "Get" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/vehicles",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "smartfleet.vehicle",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/api/vehicles",
+      "UpstreamHttpMethod": [ "Get", "Post" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/vehicles/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "smartfleet.vehicle",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/api/vehicles/{id}",
+      "UpstreamHttpMethod": [ "Get", "Put", "Delete" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/drivers",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "smartfleet.driver",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/api/drivers",
+      "UpstreamHttpMethod": [ "Get", "Post" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/drivers/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "smartfleet.driver",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/api/drivers/{id}",
+      "UpstreamHttpMethod": [ "Get", "Put" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/drivers/{id}/assign",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "smartfleet.driver",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/api/drivers/{id}/assign",
+      "UpstreamHttpMethod": [ "Post" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/trips",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "smartfleet.trip",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/api/trips",
+      "UpstreamHttpMethod": [ "Get", "Post" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/trips/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "smartfleet.trip",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/api/trips/{id}",
+      "UpstreamHttpMethod": [ "Get", "Put" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/trips/{id}/start",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "smartfleet.trip",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/api/trips/{id}/start",
+      "UpstreamHttpMethod": [ "Post" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/trips/{id}/complete",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "smartfleet.trip",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/api/trips/{id}/complete",
+      "UpstreamHttpMethod": [ "Post" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/notify/email",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "smartfleet.notification",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/api/notify/email",
+      "UpstreamHttpMethod": [ "Post" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/notify/sms",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "smartfleet.notification",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/api/notify/sms",
+      "UpstreamHttpMethod": [ "Post" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/notifications",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "smartfleet.notification",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/api/notifications",
+      "UpstreamHttpMethod": [ "Get" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    }
+  ],
+  "GlobalConfiguration": {
+    "BaseUrl": "http://localhost:9000"
+  //  "BaseUrl": "http://smartfleet.apigateway:8080"
+  }
+}

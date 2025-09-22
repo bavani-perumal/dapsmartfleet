@@ -1,0 +1,1 @@
+Basic Kubernetes manifests would go here; customize for your cluster (AKS/GKE/EKS).

@@ -1,0 +1,17 @@
+{
+  "profiles": {
+    "Docker Compose": {
+      "commandName": "DockerCompose",
+      "commandVersion": "1.0",
+      "serviceActions": {
+        "smartfleet.trip": "StartDebugging",
+        "smartfleet.vehicle": "StartDebugging",
+        "smartfleet.telemetry": "StartDebugging",
+        "smartfleet.notification": "StartDebugging",
+        "smartfleet.driver": "StartDebugging",
+        "smartfleet.auth": "StartDebugging",
+        "smartfleet.apigateway": "StartDebugging"
+      }
+    }
+  }
+}

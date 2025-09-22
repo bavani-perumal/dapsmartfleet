@@ -1,0 +1,25 @@
+{
+  "profiles": {
+    "SmartFleet.Auth": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        // "JWT_SECRET": null,
+       // "JWT_SECRET": "B38A16D1-C130-41A4-A899-2392F791407430F94D47-1582-4417-879A-D43BB5689E90"
+      },
+      "applicationUrl": "http://localhost:5101"
+    },
+    "Container (Dockerfile)": {
+      "commandName": "Docker",
+      "launchBrowser": true,
+      "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}",
+      "environmentVariables": {
+        "ASPNETCORE_HTTPS_PORTS": "8081",
+        "ASPNETCORE_HTTP_PORTS": "8080"
+      },
+      "publishAllPorts": true,
+      "useSSL": true
+    }
+  }
+}

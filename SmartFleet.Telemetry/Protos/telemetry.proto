@@ -1,0 +1,37 @@
+syntax = "proto3";
+option csharp_namespace = "SmartFleet.Telemetry";
+
+message TelemetryData {
+  string vehicleId = 1;
+  double latitude = 2;
+  double longitude = 3;
+  double speed = 4;
+  double fuelLevel = 5;
+  int64 timestamp = 6;
+  string tripId = 7;
+  string status = 8;
+}
+
+message TelemetryAck {
+  string message = 1;
+}
+
+message TelemetryRequest {
+  string tripId = 1;
+  string vehicleId = 2;
+  string latitude = 3;
+  string longitude = 4;
+  string status = 5;
+  double speed = 6;
+  double fuelLevel = 7;
+}
+
+message TelemetryResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+service TelemetryService {
+  rpc StreamTelemetry(stream TelemetryData) returns (stream TelemetryAck);
+  rpc RecordTelemetry(TelemetryRequest) returns (TelemetryResponse);
+}

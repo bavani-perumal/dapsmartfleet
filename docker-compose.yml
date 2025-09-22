@@ -1,0 +1,304 @@
+# services:
+# # - ConnectionStrings__DefaultConnection=Server=host.docker.internal,1433;Database=AuthDb;User Id=YourLocalUser;Password=YourLocalPassword;TrustServerCertificate=True
+#   # environment:
+#   #  jwtsecretkey="33"
+
+#   sqlserver:
+#     container_name: sqlserver
+#     image: mcr.microsoft.com/mssql/server:2022-latest
+#     environment:
+#       - ACCEPT_EULA=Y
+#       # TODO_CUSTOMIZE: Change SQL Server password for your environment
+#       - SA_PASSWORD=bhava!Passw0rd
+#     ports:
+#       - "1433:1433"
+#     networks:
+#       - smartfleet-network
+
+#   smartfleet.auth:
+#     container_name: smartfleet.auth
+#     image: ${DOCKER_REGISTRY-}smartfleetauth
+#     build:
+#       context: .
+#       dockerfile: src/Auth/Dockerfile
+#     ports:
+#      - "3000:8080"
+#     environment:
+#       # TODO_CUSTOMIZE: Update connection string and JWT secret for your environment
+#       - ConnectionStrings__DefaultConnection=Server=sqlserver,1433;Database=AuthDb;User Id=sa;Password=bhava!Passw0rd;TrustServerCertificate=True
+#       - JWT_SECRET=B38A16D1-C130-41A4-A899-2392F791407430F94D47-1582-4417-879A-D43BB5689E90
+#     depends_on:
+#       - sqlserver
+#     networks:
+#       - smartfleet-network
+
+#   smartfleet.vehicle:
+#     container_name: smartfleet.vehicle
+#     image: ${DOCKER_REGISTRY-}smartfleetvehicle
+#     build:
+#       context: .
+#       dockerfile: src/Vehicle/Dockerfile
+#     ports:
+#        - "5001:8080"
+#     environment:
+#       - ConnectionStrings__DefaultConnection=Server=sqlserver,1433;Database=VehicleDb;User Id=sa;Password=bhava!Passw0rd;TrustServerCertificate=True
+#       - JWT_SECRET=B38A16D1-C130-41A4-A899-2392F791407430F94D47-1582-4417-879A-D43BB5689E90
+#     depends_on:
+#       - sqlserver
+#     networks:
+#       - smartfleet-network
+
+#   smartfleet.telemetry:
+#     container_name: smartfleet.telemetry
+#     image: ${DOCKER_REGISTRY-}smartfleettelemetry
+#     build:
+#       context: .
+#       dockerfile: SmartFleet.Telemetry/Dockerfile
+#     ports:
+#     - "4000:8080"
+#     environment:
+#       - ConnectionStrings__DefaultConnection=Server=sqlserver,1433;Database=TelemetryDb;User Id=sa;Password=bhava!Passw0rd;TrustServerCertificate=True
+#     depends_on:
+#       - sqlserver
+#     networks:
+#       - smartfleet-network
+
+#   smartfleet.driver:
+#     container_name: smartfleet.driver
+#     image: ${DOCKER_REGISTRY-}smartfleetdriver
+#     build:
+#       context: .
+#       dockerfile: src/Driver/Dockerfile
+#     ports:
+#       - "6000:8080"
+#     environment:
+#       - ConnectionStrings__DefaultConnection=Server=sqlserver,1433;Database=DriverDb;User Id=sa;Password=bhava!Passw0rd;TrustServerCertificate=True
+#       - JWT_SECRET=B38A16D1-C130-41A4-A899-2392F791407430F94D47-1582-4417-879A-D43BB5689E90
+#     depends_on:
+#       - sqlserver
+#     networks:
+#       - smartfleet-network
+
+#   smartfleet.trip:
+#     container_name: smartfleet.trip
+#     image: ${DOCKER_REGISTRY-}smartfleettrip
+#     build:
+#       context: .
+#       dockerfile: src/Trip/Dockerfile
+#     ports:
+#         - "8000:8080"
+#     environment:
+#       - ConnectionStrings__DefaultConnection=Server=sqlserver,1433;Database=TripDb;User Id=sa;Password=bhava!Passw0rd;TrustServerCertificate=True
+#       - ConnectionStrings__ReadConnection=Server=sqlserver,1433;Database=TripReadDb;User Id=sa;Password=bhava!Passw0rd;TrustServerCertificate=True
+#       - JWT_SECRET=B38A16D1-C130-41A4-A899-2392F791407430F94D47-1582-4417-879A-D43BB5689E90
+#     depends_on:
+#       - sqlserver
+#     networks:
+#       - smartfleet-network
+
+#   smartfleet.notification:
+#     container_name: smartfleet.notification
+#     image: ${DOCKER_REGISTRY-}smartfleetnotification
+#     build:
+#       context: .
+#       dockerfile: src/Notification/Dockerfile
+#     ports:
+#         - "7001:8080"
+#     environment:
+#       - ConnectionStrings__DefaultConnection=Server=sqlserver,1433;Database=NotificationDb;User Id=sa;Password=bhava!Passw0rd;TrustServerCertificate=True
+#       - JWT_SECRET=B38A16D1-C130-41A4-A899-2392F791407430F94D47-1582-4417-879A-D43BB5689E90
+#     depends_on:
+#       - sqlserver
+#     networks:
+#       - smartfleet-network
+
+#   smartfleet.apigateway:
+#     container_name: smartfleet.apigateway
+#     image: ${DOCKER_REGISTRY-}smartfleetapigateway
+#     build:
+#       context: .
+#       dockerfile: src/SmartFleet.ApiGateway/Dockerfile
+#     ports:
+#      - "9000:8080"
+#     environment:
+#       - JWT_SECRET=B38A16D1-C130-41A4-A899-2392F791407430F94D47-1582-4417-879A-D43BB5689E90
+#     depends_on:
+#       - smartfleet.auth
+#       - smartfleet.vehicle
+#       - smartfleet.telemetry
+#       - smartfleet.driver
+#       - smartfleet.trip
+#       - smartfleet.notification
+#     networks:
+#       - smartfleet-network
+
+     
+# networks:
+#  smartfleet-network:
+#    driver: bridge
+
+
+
+services:
+  sqlserver:
+    container_name: sqlserver
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=bhava!Passw0rd
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqlserver_data:/var/opt/mssql
+    networks:
+      - smartfleet-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P 'bhava!Passw0rd' -C -Q 'SELECT 1'"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 120s
+
+  smartfleet.auth:
+    container_name: smartfleet.auth
+    image: ${DOCKER_REGISTRY-}smartfleetauth
+    build:
+      context: .
+      dockerfile: src/Auth/Dockerfile
+    ports:
+     - "3000:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ConnectionStrings__DefaultConnection=Server=sqlserver,1433;Database=AuthDb;User Id=sa;Password=bhava!Passw0rd;TrustServerCertificate=True
+      - JWT_SECRET=B38A16D1-C130-41A4-A899-2392F791407430F94D47-1582-4417-879A-D43BB5689E90
+    depends_on:
+      sqlserver:
+        condition: service_healthy
+    networks:
+      - smartfleet-network
+    restart: unless-stopped
+
+  smartfleet.vehicle:
+    container_name: smartfleet.vehicle
+    image: ${DOCKER_REGISTRY-}smartfleetvehicle
+    build:
+      context: .
+      dockerfile: src/Vehicle/Dockerfile
+    ports:
+       - "5001:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ConnectionStrings__DefaultConnection=Server=sqlserver,1433;Database=VehicleDb;User Id=sa;Password=bhava!Passw0rd;TrustServerCertificate=True
+      - JWT_SECRET=B38A16D1-C130-41A4-A899-2392F791407430F94D47-1582-4417-879A-D43BB5689E90
+    depends_on:
+      sqlserver:
+        condition: service_healthy
+    networks:
+      - smartfleet-network
+    restart: unless-stopped
+
+  smartfleet.telemetry:
+    container_name: smartfleet.telemetry
+    image: ${DOCKER_REGISTRY-}smartfleettelemetry
+    build:
+      context: .
+      dockerfile: SmartFleet.Telemetry/Dockerfile
+    ports:
+    - "4000:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ConnectionStrings__DefaultConnection=Server=sqlserver,1433;Database=TelemetryDb;User Id=sa;Password=bhava!Passw0rd;TrustServerCertificate=True
+    depends_on:
+      sqlserver:
+        condition: service_healthy
+    networks:
+      - smartfleet-network
+    restart: unless-stopped
+
+  smartfleet.driver:
+    container_name: smartfleet.driver
+    image: ${DOCKER_REGISTRY-}smartfleetdriver
+    build:
+      context: .
+      dockerfile: src/Driver/Dockerfile
+    ports:
+      - "6000:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ConnectionStrings__DefaultConnection=Server=sqlserver,1433;Database=DriverDb;User Id=sa;Password=bhava!Passw0rd;TrustServerCertificate=True
+      - JWT_SECRET=B38A16D1-C130-41A4-A899-2392F791407430F94D47-1582-4417-879A-D43BB5689E90
+    depends_on:
+      sqlserver:
+        condition: service_healthy
+    networks:
+      - smartfleet-network
+    restart: unless-stopped
+
+  smartfleet.trip:
+    container_name: smartfleet.trip
+    image: ${DOCKER_REGISTRY-}smartfleettrip
+    build:
+      context: .
+      dockerfile: src/Trip/Dockerfile
+    ports:
+        - "8000:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ConnectionStrings__DefaultConnection=Server=sqlserver,1433;Database=TripDb;User Id=sa;Password=bhava!Passw0rd;TrustServerCertificate=True
+      - ConnectionStrings__ReadConnection=Server=sqlserver,1433;Database=TripReadDb;User Id=sa;Password=bhava!Passw0rd;TrustServerCertificate=True
+      - JWT_SECRET=B38A16D1-C130-41A4-A899-2392F791407430F94D47-1582-4417-879A-D43BB5689E90
+    depends_on:
+      sqlserver:
+        condition: service_healthy
+    networks:
+      - smartfleet-network
+    restart: unless-stopped
+
+  smartfleet.notification:
+    container_name: smartfleet.notification
+    image: ${DOCKER_REGISTRY-}smartfleetnotification
+    build:
+      context: .
+      dockerfile: src/Notification/Dockerfile
+    ports:
+        - "7001:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ConnectionStrings__DefaultConnection=Server=sqlserver,1433;Database=NotificationDb;User Id=sa;Password=bhava!Passw0rd;TrustServerCertificate=True
+      - JWT_SECRET=B38A16D1-C130-41A4-A899-2392F791407430F94D47-1582-4417-879A-D43BB5689E90
+    depends_on:
+      sqlserver:
+        condition: service_healthy
+    networks:
+      - smartfleet-network
+    restart: unless-stopped
+
+  smartfleet.apigateway:
+    container_name: smartfleet.apigateway
+    image: ${DOCKER_REGISTRY-}smartfleetapigateway
+    build:
+      context: .
+      dockerfile: src/SmartFleet.ApiGateway/Dockerfile
+    ports:
+     - "9000:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - JWT_SECRET=B38A16D1-C130-41A4-A899-2392F791407430F94D47-1582-4417-879A-D43BB5689E90
+    depends_on:
+      - smartfleet.auth
+      - smartfleet.vehicle
+      - smartfleet.telemetry
+      - smartfleet.driver
+      - smartfleet.trip
+      - smartfleet.notification
+    networks:
+      - smartfleet-network
+    restart: unless-stopped
+
+volumes:
+  sqlserver_data:
+
+networks:
+ smartfleet-network:
+   driver: bridge

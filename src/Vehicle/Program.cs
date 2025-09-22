@@ -7,7 +7,10 @@ using System.Text;
 using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Host.UseSerilog((ctx, lc) => lc.WriteTo.Console());
+builder.Host.UseSerilog((ctx, lc) => lc.WriteTo.Console()); 
+
+
+//
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
